@@ -1,0 +1,63 @@
+READ AND WRITE "empty" cart with record
+READ AND WRITE selectedProduct with record
+READ AND WRITE choosing with BOOLEAN
+
+READ AND WRITE listProduct with list
+STORE listProduct with "name, price, stock"
+
+WHILE choosing is true DO
+    STORE selectedProduct with "SELECTED" from listProduct
+    STORE selectedProduct.quantity with number 
+    WHILE selectedProduct.quantity greater than selectedProduct.stock DO
+        selectedProduct.quantity substract by 1
+    END WHILE
+    ADD selectedProduct into cart
+    STORE choosing with true OR false
+END WHILE
+
+READ AND WRITE subTotalPrice with number
+READ AND WRITE price with number
+READ AND WRITE tax_rate with number
+READ AND WRITE tax with number
+
+PROCEDURE calculateSubTotal(subTotalPrice)
+    For each selectedProduct in cart DO
+        STORE price with selectedProduct.price multiplied by selectedProduct.quantity
+    END FOR
+    STORE tax with price multiplied by tax_rate
+    STORE subTotalPrice with price plus tax
+    PRINT subTotalPrice
+END PROCEDURE
+
+READ AND WRITE listVoucher with list
+STORE listVoucher with "name, discount"
+READ AND WRITE claimVoucher with record
+
+READ AND WRITE usingVoucher with BOOLEAN
+STORE usingVoucher with true OR false
+
+IF usingVoucher
+    STORE claimVoucher with "CLAIM" from listVoucher
+
+    READ AND WRITE totalPrice with number
+    STORE totalPrice with calculateSubTotal(subTotalPrice) minus claimVoucher
+    PRINT totalPrice
+
+ELSE
+    OUT of CONDITION
+
+READ AND WRITE cod with BOOLEAN
+STORE cod with true OR false
+
+IF cod
+    CALL payment()
+ELSE
+    READ AND WRITE balance with number
+    STORE balance with any number
+
+    WHILE balance less than subTotalPrice OR totalPrice DO
+        STORE balance with any number
+    END WHILE
+
+    CALL payment()
+
